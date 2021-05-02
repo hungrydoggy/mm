@@ -1,7 +1,7 @@
 name: mm
 description: Model Manager
-version: 0.0.1
-homepage:
+version: 0.0.3
+homepage: https://github.com/hungrydoggy/mm
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -14,7 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+
   pedantic: ^1.11.0
 
 # For information on the generic Dart part of this file, see the

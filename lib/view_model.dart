@@ -62,7 +62,7 @@ class ViewModel {
       addOnVMPropertyChangedListener(on_vm_property_change);
     
     // classify vm_properties by model_selector and model_id
-    final selector_modelid_vmproperties_map = <ModelSelector, Map<int, List<VMProperty>>>{};
+    final selector_modelid_vmproperties_map = <ModelHandler, Map<int, List<VMProperty>>>{};
     for (final vmp in _vm_properties) {
       if (selector_modelid_vmproperties_map.containsKey(vmp.model_selector) == false)
         selector_modelid_vmproperties_map[vmp.model_selector] = {};

@@ -8,7 +8,7 @@ abstract class Model {
 
   static final Map<String, _ModelData> _modelname_modeldata_map = {};
 
-  static Model? getModel (ModelSelector selector, dynamic id) {
+  static Model? getModel (ModelHandler selector, dynamic id) {
     if (_modelname_modeldata_map.containsKey(selector.model_name) == false)
       return null;
     
@@ -16,7 +16,7 @@ abstract class Model {
     return model_data!.getModel(id);
   }
 
-  static void putModel (ModelSelector selector, Model model) {
+  static void putModel (ModelHandler selector, Model model) {
     if (_modelname_modeldata_map.containsKey(model.model_name) == false)
       _modelname_modeldata_map[model.model_name] = _ModelData(queue_size: selector.queue_size);
     
@@ -25,7 +25,7 @@ abstract class Model {
   }
 
   static Model getOrNewModel (
-      ModelSelector selector,
+      ModelHandler selector,
       dynamic id,
   ) {
 
@@ -44,7 +44,7 @@ abstract class Model {
   }
 
   static Future<Model?> fetchModelWithPropertyNames (
-      ModelSelector selector,
+      ModelHandler selector,
       dynamic id,
       List<String> property_names,
   ) async {
@@ -54,7 +54,7 @@ abstract class Model {
   }
 
   static Future<Model?> fetchModel (
-      ModelSelector selector,
+      ModelHandler selector,
       dynamic id,
       List<Property> properties,
   ) async {
@@ -64,7 +64,7 @@ abstract class Model {
   }
 
   static Future<T?> createModel<T extends Model> (
-      ModelSelector selector,
+      ModelHandler selector,
       Map<Property, dynamic> property_value_map,
   ) async {
     final m = await selector.onCreate<T>(property_value_map);
@@ -76,7 +76,7 @@ abstract class Model {
   }
 
   static Future<void> deleteModel (
-      ModelSelector selector,
+      ModelHandler selector,
       dynamic id,
   ) async {
     if (_modelname_modeldata_map.containsKey(selector.model_name) == false)
@@ -98,14 +98,14 @@ abstract class Model {
 
   dynamic get id;
   String get model_name;
-  ModelSelector get selector;
+  ModelHandler get selector;
 
   Model ({int fetch_timeout_ms = 10000}):
       _fetch_timeout_ms = fetch_timeout_ms;
 
   void setProperties (List<Property> properties) {
     for (final p in properties) {
-      p.setModel(this);
+      p.sys_setModel(this);
       _name_property_map[p.name] = p;
     }
   }
@@ -219,7 +219,7 @@ class _ModelData {
   }
 }
 
-abstract class ModelSelector {
+abstract class ModelHandler {
   int get queue_size => 1000000;
 
   String get model_name;

@@ -8,35 +8,35 @@ abstract class Model {
 
   static final Map<String, _ModelData> _modelname_modeldata_map = {};
 
-  static Model? getModel (ModelHandler selector, dynamic id) {
-    if (_modelname_modeldata_map.containsKey(selector.model_name) == false)
+  static Model? getModel (ModelHandler handler, dynamic id) {
+    if (_modelname_modeldata_map.containsKey(handler.model_name) == false)
       return null;
     
-    final model_data = _modelname_modeldata_map[selector.model_name];
+    final model_data = _modelname_modeldata_map[handler.model_name];
     return model_data!.getModel(id);
   }
 
-  static void putModel (ModelHandler selector, Model model) {
+  static void putModel (ModelHandler handler, Model model) {
     if (_modelname_modeldata_map.containsKey(model.model_name) == false)
-      _modelname_modeldata_map[model.model_name] = _ModelData(queue_size: selector.queue_size);
+      _modelname_modeldata_map[model.model_name] = _ModelData(queue_size: handler.queue_size);
     
     final model_data = _modelname_modeldata_map[model.model_name];
     model_data!.putModel(model);
   }
 
   static Model getOrNewModel (
-      ModelHandler selector,
+      ModelHandler handler,
       dynamic id,
   ) {
 
-    if (_modelname_modeldata_map.containsKey(selector.model_name) == false)
-      _modelname_modeldata_map[selector.model_name] = _ModelData(queue_size: selector.queue_size);
+    if (_modelname_modeldata_map.containsKey(handler.model_name) == false)
+      _modelname_modeldata_map[handler.model_name] = _ModelData(queue_size: handler.queue_size);
     
-    final model_data = _modelname_modeldata_map[selector.model_name];
+    final model_data = _modelname_modeldata_map[handler.model_name];
 
     var m = model_data!.getModel(id);
     if (m == null) {
-      m = selector.newInstance(id);
+      m = handler.newInstance(id);
       model_data.putModel(m);
     }
 
@@ -44,51 +44,51 @@ abstract class Model {
   }
 
   static Future<Model?> fetchModelWithPropertyNames (
-      ModelHandler selector,
+      ModelHandler handler,
       dynamic id,
       List<String> property_names,
   ) async {
-    final m = getOrNewModel(selector, id);
+    final m = getOrNewModel(handler, id);
     await m.fetch(property_names.where((e)=>m.getProperty(e)!=null).map<Property>((e)=>m.getProperty(e)!).toList());
     return m;
   }
 
   static Future<Model?> fetchModel (
-      ModelHandler selector,
+      ModelHandler handler,
       dynamic id,
       List<Property> properties,
   ) async {
-    final m = getOrNewModel(selector, id);
+    final m = getOrNewModel(handler, id);
     await m.fetch(properties);
     return m;
   }
 
   static Future<T?> createModel<T extends Model> (
-      ModelHandler selector,
+      ModelHandler handler,
       Map<Property, dynamic> property_value_map,
   ) async {
-    final m = await selector.onCreate<T>(property_value_map);
+    final m = await handler.onCreate<T>(property_value_map);
     if (m == null)
       return null;
     
-    putModel(selector, m);
+    putModel(handler, m);
     return m;
   }
 
   static Future<void> deleteModel (
-      ModelHandler selector,
+      ModelHandler handler,
       dynamic id,
   ) async {
-    if (_modelname_modeldata_map.containsKey(selector.model_name) == false)
+    if (_modelname_modeldata_map.containsKey(handler.model_name) == false)
       return;
     
-    final model_data = _modelname_modeldata_map[selector.model_name]!;
+    final model_data = _modelname_modeldata_map[handler.model_name]!;
     final m = model_data.getModel(id);
     if (m == null)
       return;
     
     model_data.removeModel(m);
-    return selector.onDelete(id);
+    return handler.onDelete(id);
   }
 
 
@@ -98,7 +98,7 @@ abstract class Model {
 
   dynamic get id;
   String get model_name;
-  ModelHandler get selector;
+  ModelHandler get handler;
 
   Model ({int fetch_timeout_ms = 10000}):
       _fetch_timeout_ms = fetch_timeout_ms;

@@ -61,21 +61,21 @@ class ViewModel {
     if (on_vm_property_change != null)
       addOnVMPropertyChangedListener(on_vm_property_change);
     
-    // classify vm_properties by model_selector and model_id
-    final selector_modelid_vmproperties_map = <ModelHandler, Map<int, List<VMProperty>>>{};
+    // classify vm_properties by model_handler and model_id
+    final handler_modelid_vmproperties_map = <ModelHandler, Map<int, List<VMProperty>>>{};
     for (final vmp in _vm_properties) {
-      if (selector_modelid_vmproperties_map.containsKey(vmp.model_selector) == false)
-        selector_modelid_vmproperties_map[vmp.model_selector] = {};
+      if (handler_modelid_vmproperties_map.containsKey(vmp.model_handler) == false)
+        handler_modelid_vmproperties_map[vmp.model_handler] = {};
       
-      if (selector_modelid_vmproperties_map[vmp.model_selector]!.containsKey(vmp.model_id) == false)
-        selector_modelid_vmproperties_map[vmp.model_selector]![vmp.model_id] = [];
+      if (handler_modelid_vmproperties_map[vmp.model_handler]!.containsKey(vmp.model_id) == false)
+        handler_modelid_vmproperties_map[vmp.model_handler]![vmp.model_id] = [];
       
-      selector_modelid_vmproperties_map[vmp.model_selector]![vmp.model_id]!.add(vmp);
+      handler_modelid_vmproperties_map[vmp.model_handler]![vmp.model_id]!.add(vmp);
     }
 
     // set property
-    for (final ms in selector_modelid_vmproperties_map.keys) {
-      final modelid_vmproperties_map = selector_modelid_vmproperties_map[ms]!;
+    for (final ms in handler_modelid_vmproperties_map.keys) {
+      final modelid_vmproperties_map = handler_modelid_vmproperties_map[ms]!;
       for (final mid in modelid_vmproperties_map.keys) {
         final vm_properties = modelid_vmproperties_map[mid]!;
         final m = await Model.fetchModelWithPropertyNames(ms, mid, vm_properties.map<String>((e)=>e.property_name).toList());

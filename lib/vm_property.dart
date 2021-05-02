@@ -6,14 +6,14 @@ import 'view_model.dart';
 
 
 class VMProperty<T> {
-  final ModelHandler _model_selector;
+  final ModelHandler _model_handler;
   final dynamic _model_id;
   final String _property_name;
 
   ViewModel? _view_model;
   Property<T>? _property;
 
-  ModelHandler get model_selector => _model_selector;
+  ModelHandler get model_handler => _model_handler;
   dynamic get model_id => _model_id;
   String get property_name => _property_name;
   ViewModel? get view_model => _view_model;
@@ -28,7 +28,7 @@ class VMProperty<T> {
     return _property!.value;
   }
 
-  VMProperty (this._model_selector, this._model_id, this._property_name);
+  VMProperty (this._model_handler, this._model_id, this._property_name);
 
   // called by system
   void sys_setProperty (Property<T> p) {

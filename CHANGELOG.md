@@ -1,3 +1,6 @@
+## 0.0.5
+- add nested VM
+
 ## 0.0.3
 - rename ModelSelector to ModelHandler
 

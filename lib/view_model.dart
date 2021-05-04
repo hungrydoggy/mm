@@ -10,16 +10,28 @@ typedef VMPropertyChangeListenerFunc = void Function (VMProperty vmp);
 class ViewModel {
 
   List<VMProperty> _vm_properties = [];
-  final Map<VMProperty, bool> _vmproperties_check_map = {};
+  final Map<VMProperty, bool> _vmproperty_check_map = {};
+  List<ViewModel> _nesteds = [];
+  final Map<ViewModel, bool> _nested_check_map = {};
+  ViewModel? _parent_vm;
   bool _is_initing = false;
   final List<VMPropertyChangeListenerFunc> _listeners = [];
 
   void setProperties (List<VMProperty> properties) {
     _vm_properties = properties;
-    _vmproperties_check_map.clear();
+    _vmproperty_check_map.clear();
     for (final vmp in _vm_properties) {
-      _vmproperties_check_map[vmp] = true;
+      _vmproperty_check_map[vmp] = true;
       vmp.sys_setViewModel(this);
+    }
+  }
+
+  void setNestedVMs (List<ViewModel> nesteds) {
+    _nesteds = nesteds;
+    _nested_check_map.clear();
+    for (final n in _nesteds) {
+      _nested_check_map[n] = true;
+      n._parent_vm = this;
     }
   }
 
@@ -94,6 +106,12 @@ class ViewModel {
     if (isInited() == false) {
       return;
     }
+    final futures = <Future<void>>[];
+
+
+    // fetch nested vms
+    for (final vm in _nesteds)
+      futures.add(vm.fetch());
 
 
     // classify properties by model
@@ -111,7 +129,6 @@ class ViewModel {
 
 
     // fetch
-    final futures = <Future<void>>[];
     for (final m in model_properties_map.keys) {
       final ps = model_properties_map[m];
       if (ps!.isEmpty)
@@ -119,6 +136,8 @@ class ViewModel {
       futures.add(m.fetch(ps));
     }
 
+
+    // awaits
     for (final f in futures)
       await f;
   }
@@ -133,7 +152,7 @@ class ViewModel {
     // make property_value_map by model
     final model_property_value_map = <Model, Map<Property, dynamic>>{};
     for (final vmp in vmproperty_value_map.keys) {
-      if (_vmproperties_check_map.containsKey(vmp) == false)
+      if (_vmproperty_check_map.containsKey(vmp) == false)
         continue;
       
       final p = vmp.property;
@@ -156,6 +175,12 @@ class ViewModel {
       futures.add(m.update(pvm));
     }
 
+
+    // fetch all
+    futures.add(_findRoot().fetch());
+
+
+    // awaits
     for (final f in futures)
       await f;
   }
@@ -183,5 +208,12 @@ class ViewModel {
   void dispose () {
     for (final vmp in _vm_properties)
       vmp.dispose();
+  }
+
+  ViewModel _findRoot () {
+    var vm = this;
+    while (vm._parent_vm != null)
+      vm = _parent_vm!;
+    return vm;
   }
 }

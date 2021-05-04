@@ -21,7 +21,7 @@ abstract class ViewModel {
   String? get vm_name => _vm_name;
 
 
-  ViewModel ({String? name}): _vm_name = name;
+  ViewModel ({String? vm_name}): _vm_name = vm_name;
 
   void setProperties (List<VMProperty> properties) {
     _vm_properties = properties;

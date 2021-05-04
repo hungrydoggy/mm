@@ -7,15 +7,18 @@ import 'vm_property.dart';
 
 typedef VMPropertyChangeListenerFunc = void Function (VMProperty vmp);
 
-class ViewModel {
+abstract class ViewModel {
 
+  String? _name;
   List<VMProperty> _vm_properties = [];
   final Map<VMProperty, bool> _vmproperty_check_map = {};
   List<ViewModel> _nesteds = [];
-  final Map<ViewModel, bool> _nested_check_map = {};
+  final Map<String, ViewModel> _name_nested_map = {};
   ViewModel? _parent_vm;
   bool _is_initing = false;
   final List<VMPropertyChangeListenerFunc> _listeners = [];
+
+  ViewModel ({String? name}): _name = name;
 
   void setProperties (List<VMProperty> properties) {
     _vm_properties = properties;
@@ -28,9 +31,10 @@ class ViewModel {
 
   void setNestedVMs (List<ViewModel> nesteds) {
     _nesteds = nesteds;
-    _nested_check_map.clear();
+    _name_nested_map.clear();
     for (final n in _nesteds) {
-      _nested_check_map[n] = true;
+      if (n._name != null)
+      _name_nested_map[n._name!] = n;
       n._parent_vm = this;
     }
   }

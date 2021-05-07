@@ -1,3 +1,6 @@
+## 0.0.9
+- make init / dispose recursively for nested VM
+
 ## 0.0.6
 - add nested VM
 

@@ -68,7 +68,12 @@ abstract class ViewModel {
     return false;
   }
 
-  Future<void> init ({VMPropertyChangeListenerFunc? on_vm_property_change}) async {
+  Future<void> init (
+      {
+        VMPropertyChangeListenerFunc? on_vm_property_change,
+        bool need_fetch = true,
+      }
+  ) async {
     if (_is_initing == true) {
       while (_is_initing == true)
         await Future.delayed(Duration(milliseconds: 100));
@@ -76,6 +81,15 @@ abstract class ViewModel {
     }
     
     _is_initing = true;
+
+    // init nested vms
+    for (final nvm in _nesteds) {
+      // ignore: unawaited_futures
+      nvm.init(
+        on_vm_property_change: on_vm_property_change,
+        need_fetch: false,
+      );
+    }
 
     if (on_vm_property_change != null)
       addOnVMPropertyChangedListener(on_vm_property_change);
@@ -105,7 +119,8 @@ abstract class ViewModel {
 
     _is_initing = false;
 
-    return fetch();
+    if (need_fetch)
+      return fetch();
   }
 
   Future<void> fetch () async {
@@ -213,6 +228,12 @@ abstract class ViewModel {
   }
 
   void dispose () {
+    // dispose nested vms
+    for (final nvm in _nesteds)
+      nvm.dispose();
+
+
+    // dispose vm_properties
     for (final vmp in _vm_properties)
       vmp.dispose();
   }

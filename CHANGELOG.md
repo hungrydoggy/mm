@@ -1,3 +1,6 @@
+## 0.0.10
+- Add VMProperty.name
+
 ## 0.0.9
 - make init / dispose recursively for nested VM
 

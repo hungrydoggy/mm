@@ -9,6 +9,7 @@ class VMProperty<T> {
   final ModelHandler _model_handler;
   final dynamic _model_id;
   final String _property_name;
+  final String? _name_in_vm;
 
   ViewModel? _view_model;
   Property<T>? _property;
@@ -16,6 +17,7 @@ class VMProperty<T> {
   ModelHandler get model_handler => _model_handler;
   dynamic get model_id => _model_id;
   String get property_name => _property_name;
+  String get name => (_name_in_vm != null)? _name_in_vm!: _property_name;
   ViewModel? get view_model => _view_model;
   Property<T>? get property => _property;
   bool get is_inited => _property != null;
@@ -28,7 +30,7 @@ class VMProperty<T> {
     return _property!.value;
   }
 
-  VMProperty (this._model_handler, this._model_id, this._property_name);
+  VMProperty (this._model_handler, this._model_id, this._property_name, {String? name}): _name_in_vm = name;
 
   // called by system
   void sys_setProperty (Property<T> p) {

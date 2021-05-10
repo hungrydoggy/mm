@@ -9,9 +9,10 @@ typedef VMPropertyChangeListenerFunc = void Function (VMProperty vmp);
 
 abstract class ViewModel {
 
-  String? _vm_name;
+  final String? _vm_name;
   List<VMProperty> _vm_properties = [];
   final Map<VMProperty, bool> _vmproperty_check_map = {};
+  final Map<String, VMProperty> _name_vmproperty_map = {};
   List<ViewModel> _nesteds = [];
   final Map<String, ViewModel> _name_nested_map = {};
   ViewModel? _parent_vm;
@@ -26,8 +27,10 @@ abstract class ViewModel {
   void setProperties (List<VMProperty> properties) {
     _vm_properties = properties;
     _vmproperty_check_map.clear();
+    _name_vmproperty_map .clear();
     for (final vmp in _vm_properties) {
       _vmproperty_check_map[vmp] = true;
+      _name_vmproperty_map [vmp.name] = vmp;
       vmp.sys_setViewModel(this);
     }
   }

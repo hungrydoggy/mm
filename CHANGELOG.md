@@ -1,3 +1,6 @@
+## 0.0.11
+- Add value converter of Property
+
 ## 0.0.10
 - Add VMProperty.name
 

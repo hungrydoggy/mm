@@ -4,8 +4,29 @@ import 'model.dart';
 
 
 typedef PropertyChangeListenerFunc = void Function ();
+typedef PropertyToValueFunc<T>   = T? Function (dynamic json_value);
+typedef PropertyFromValueFunc<T> = dynamic Function (T? value);
+
+T? _defaultToValueFunc<T> (dynamic json_value) {
+  return json_value as T;
+}
+dynamic _defaultFromValueFunc<T> (T? value) {
+  return value;
+}
 
 class Property<T> {
+  static PropertyToValueFunc   _to_value_func   = _defaultToValueFunc;
+  static PropertyFromValueFunc _from_value_func = _defaultFromValueFunc;
+
+  static void setToValueFunc (PropertyToValueFunc f) {
+    _to_value_func = f;
+  }
+
+  static void setFromValueFunc (PropertyFromValueFunc f) {
+    _from_value_func = f;
+  }
+
+
   Model? _model;
   final String _name;
   T? _value;
@@ -17,6 +38,7 @@ class Property<T> {
   Model? get model => _model;  
   String get name => _name;
   T? get value => _value;
+  dynamic get json_value => _from_value_func(_value);
   int get last_updated_ts => _last_updated_ts;
   int get lifetime_ms => _lifetime_ms;
   bool get is_dirty => (DateTime.now().millisecondsSinceEpoch - _last_updated_ts) > _lifetime_ms;
@@ -30,8 +52,8 @@ class Property<T> {
     _last_updated_ts = 0;
   }
 
-  void setValue (T? v) {
-    _value = v;
+  void setValue (dynamic v) {
+    _value = _to_value_func(v);
     _last_updated_ts = DateTime.now().millisecondsSinceEpoch;
     for (final f in _listeners)
       f();

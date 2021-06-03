@@ -65,6 +65,9 @@ class Property<T> {
 
 class PropertyValueConverter {
   T? toValue<T> (dynamic json_value) {
+    if (T is DateTime)
+      return DateTime.parse(json_value as String) as T;
+
     return json_value as T;
   }
 

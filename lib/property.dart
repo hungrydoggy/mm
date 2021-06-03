@@ -20,7 +20,7 @@ class Property<T> {
   Model? get model => _model;  
   String get name => _name;
   T? get value => _value;
-  dynamic get json_value => value_converter.fromValue(_value);
+  dynamic get json_value => value_converter.fromValue<T>(_value);
   int get last_updated_ts => _last_updated_ts;
   int get lifetime_ms => _lifetime_ms;
   bool get is_dirty => (DateTime.now().millisecondsSinceEpoch - _last_updated_ts) > _lifetime_ms;
@@ -35,7 +35,7 @@ class Property<T> {
   }
 
   void setValue (dynamic v) {
-    _value = value_converter.toValue(v);
+    _value = value_converter.toValue<T>(v);
     _last_updated_ts = DateTime.now().millisecondsSinceEpoch;
     for (final f in _listeners)
       f();

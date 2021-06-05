@@ -1,3 +1,6 @@
+## 0.0.15
+- Fix a bug of deleteModel
+
 ## 0.0.14
 - Add value converter of Property
 

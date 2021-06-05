@@ -79,15 +79,14 @@ abstract class Model {
       ModelHandler handler,
       dynamic id,
   ) async {
-    if (_modelname_modeldata_map.containsKey(handler.model_name) == false)
-      return;
-    
-    final model_data = _modelname_modeldata_map[handler.model_name]!;
-    final m = model_data.getModel(id);
-    if (m == null)
-      return;
-    
-    model_data.removeModel(m);
+    if (_modelname_modeldata_map.containsKey(handler.model_name) == true) {
+      final model_data = _modelname_modeldata_map[handler.model_name]!;
+      final m = model_data.getModel(id);
+      if (m == null)
+        return;
+      
+      model_data.removeModel(m);
+    }
     return handler.onDelete(id);
   }
 

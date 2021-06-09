@@ -1,3 +1,6 @@
+## 0.0.16
+- Update Property to cover Point
+
 ## 0.0.15
 - Fix a bug of deleteModel
 

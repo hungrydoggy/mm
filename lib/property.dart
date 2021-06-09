@@ -1,5 +1,7 @@
 library mm;
 
+import 'dart:math';
+
 import 'model.dart';
 
 
@@ -67,6 +69,10 @@ class PropertyValueConverter {
   T? toValue<T> (dynamic json_value) {
     if (T is DateTime)
       return DateTime.parse(json_value as String) as T;
+    else if (T is Map) {
+      if (json_value.containsKey('type') && json_value['type'] == 'Point' && json_value.containsKey('coordinates'))
+        return Point<double>(json_value['coordinates'][0] as double, json_value['coordinates'][1] as double) as T;
+    }
 
     return json_value as T;
   }

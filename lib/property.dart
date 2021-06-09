@@ -69,10 +69,8 @@ class PropertyValueConverter {
   T? toValue<T> (dynamic json_value) {
     if (T is DateTime)
       return DateTime.parse(json_value as String) as T;
-    else if (T is Point) {
-      if (json_value.containsKey('type') && json_value['type'] == 'Point' && json_value.containsKey('coordinates'))
-        return Point<num>(json_value['coordinates'][0] as num, json_value['coordinates'][1] as num) as T;
-    }
+    if (json_value.containsKey('type') && json_value['type'] == 'Point' && json_value.containsKey('coordinates'))
+      return Point<num>(json_value['coordinates'][0] as num, json_value['coordinates'][1] as num) as T;
 
     return json_value as T;
   }

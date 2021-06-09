@@ -1,4 +1,4 @@
-## 0.0.18
+## 0.0.20
 - Update Property to cover Point
 
 ## 0.0.15

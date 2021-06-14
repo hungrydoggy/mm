@@ -1,3 +1,6 @@
+## 0.0.21
+- Add null type logic to PropertyValueConverter
+
 ## 0.0.20
 - Update Property to cover Point
 

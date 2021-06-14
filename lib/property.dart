@@ -72,7 +72,8 @@ class PropertyValueConverter {
     if (json_value is Map) {
       if (json_value.containsKey('type') && json_value['type'] == 'Point' && json_value.containsKey('coordinates'))
         return Point<num>(json_value['coordinates'][0] as num, json_value['coordinates'][1] as num) as T;
-    }
+    }else if (json_value == null)
+      return null;
 
     return json_value as T;
   }

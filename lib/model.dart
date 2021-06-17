@@ -127,7 +127,8 @@ abstract class Model {
   void setByJson (Map<String, dynamic> json) {
     for (final k in json.keys) {
       if (_name_property_map.containsKey(k) == false) {
-        print('no property "$k" in $model_name');
+        if (k != 'id' && k[0] != '*')
+          print('no property "$k" in $model_name');
         continue;
       }
       _name_property_map[k]!.setValue(json[k]);

@@ -1,3 +1,6 @@
+## 0.0.22
+- Remove unnecsessary print of Model.setByJson
+
 ## 0.0.21
 - Add null type logic to PropertyValueConverter
 

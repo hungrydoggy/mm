@@ -1,3 +1,6 @@
+## 0.0.23
+- Fix a bug of parsing null on PropertyValueConverter
+
 ## 0.0.22
 - Remove unnecsessary print of Model.setByJson
 

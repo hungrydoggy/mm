@@ -1,4 +1,4 @@
-## 0.0.27
+## 0.0.28
 - Fix a bug of await parts of update
 
 ## 0.0.26

@@ -204,7 +204,7 @@ abstract class ViewModel {
 
 
     // fetch all
-    await _findRoot().fetch();
+    //await _findRoot().fetch();
   }
 
   // called by system

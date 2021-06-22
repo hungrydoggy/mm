@@ -47,9 +47,12 @@ abstract class Model {
       ModelHandler handler,
       dynamic id,
       List<String> property_names,
+      {
+        Map<String, dynamic>? user_data,
+      }
   ) async {
     final m = getOrNewModel(handler, id);
-    await m.fetch(property_names.where((e)=>m.getProperty(e)!=null).map<Property>((e)=>m.getProperty(e)!).toList());
+    await m.fetch(property_names.where((e)=>m.getProperty(e)!=null).map<Property>((e)=>m.getProperty(e)!).toList(), user_data);
     return m;
   }
 
@@ -57,17 +60,23 @@ abstract class Model {
       ModelHandler handler,
       dynamic id,
       List<Property> properties,
+      {
+        Map<String, dynamic>? user_data,
+      }
   ) async {
     final m = getOrNewModel(handler, id);
-    await m.fetch(properties);
+    await m.fetch(properties, user_data);
     return m;
   }
 
   static Future<T?> createModel<T extends Model> (
       ModelHandler handler,
       Map<Property, dynamic> property_value_map,
+      {
+        Map<String, dynamic>? user_data,
+      }
   ) async {
-    final m = await handler.onCreate<T>(property_value_map);
+    final m = await handler.onCreate<T>(property_value_map, user_data);
     if (m == null)
       return null;
     
@@ -78,6 +87,9 @@ abstract class Model {
   static Future<void> deleteModel (
       ModelHandler handler,
       dynamic id,
+      {
+        Map<String, dynamic>? user_data,
+      }
   ) async {
     if (_modelname_modeldata_map.containsKey(handler.model_name) == true) {
       final model_data = _modelname_modeldata_map[handler.model_name]!;
@@ -87,7 +99,7 @@ abstract class Model {
       
       model_data.removeModel(m);
     }
-    return handler.onDelete(id);
+    return handler.onDelete(id, user_data);
   }
 
 
@@ -147,9 +159,15 @@ abstract class Model {
     return (DateTime.now().millisecondsSinceEpoch - _fetch_start_ts) < _fetch_timeout_ms;
   }
 
-  Future<void> onFetch (List<Property> properties);
+  Future<void> onFetch (
+      List<Property> properties,
+      Map<String, dynamic>? user_data,
+  );
 
-  Future<void> fetch (List<Property> properties) async {
+  Future<void> fetch (
+      List<Property> properties,
+      Map<String, dynamic>? user_data,
+  ) async {
     if (isDirty() == false)
       return;
     
@@ -160,16 +178,22 @@ abstract class Model {
     }
     
     startFetch();
-    await onFetch(properties.where((e)=>e.is_dirty == true).toList());
+    await onFetch(properties.where((e)=>e.is_dirty == true).toList(), user_data);
     endFetch();
   }
 
-  Future<void> onUpdate (Map<Property, dynamic> property_value_map);
+  Future<void> onUpdate (
+      Map<Property, dynamic> property_value_map,
+      Map<String, dynamic>? user_data,
+  );
 
-  Future<void> update (Map<Property, dynamic> property_value_map) async {
-    await onUpdate(property_value_map);
+  Future<void> update (
+      Map<Property, dynamic> property_value_map,
+      Map<String, dynamic>? user_data,
+  ) async {
+    await onUpdate(property_value_map, user_data);
     property_value_map.keys.forEach((e) => e.dirty());
-    return fetch(property_value_map.keys.toList());
+    return fetch(property_value_map.keys.toList(), user_data);
   }
 }
 
@@ -226,7 +250,13 @@ abstract class ModelHandler {
 
   Model newInstance (dynamic id);
 
-  Future<T?> onCreate<T extends Model> (Map<Property, dynamic> property_value_map);
+  Future<T?> onCreate<T extends Model> (
+      Map<Property, dynamic> property_value_map,
+      Map<String, dynamic>? user_data,
+  );
 
-  Future<void> onDelete (dynamic id);
+  Future<void> onDelete (
+      dynamic id,
+      Map<String, dynamic>? user_data,
+  );
 }

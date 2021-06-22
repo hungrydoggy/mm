@@ -1,3 +1,6 @@
+## 0.0.24
+- Add user_data to Model methods for param
+
 ## 0.0.23
 - Fix a bug of parsing null on PropertyValueConverter
 

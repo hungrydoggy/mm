@@ -1,4 +1,4 @@
-## 0.0.24
+## 0.0.26
 - Add user_data to Model methods for param
 
 ## 0.0.23

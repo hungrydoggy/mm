@@ -158,7 +158,7 @@ abstract class ViewModel {
       final ps = model_properties_map[m];
       if (ps!.isEmpty)
         continue;
-      futures.add(m.fetch(ps));
+      futures.add(m.fetch(ps, null));
     }
 
 
@@ -197,7 +197,7 @@ abstract class ViewModel {
       final pvm = model_property_value_map[m];
       if (pvm!.isEmpty)
         continue;
-      futures.add(m.update(pvm));
+      futures.add(m.update(pvm, null));
     }
 
 

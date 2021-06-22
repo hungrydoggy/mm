@@ -136,7 +136,12 @@ abstract class Model {
     return false;
   }
 
-  void setByJson (Map<String, dynamic> json) {
+  void setByJson (
+      Map<String, dynamic> json,
+      {
+        Map<String, dynamic>? user_data,
+      }
+  ) {
     for (final k in json.keys) {
       if (_name_property_map.containsKey(k) == false) {
         if (k != 'id' && k[0] != '*')

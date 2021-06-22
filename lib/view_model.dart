@@ -199,15 +199,12 @@ abstract class ViewModel {
         continue;
       futures.add(m.update(pvm, null));
     }
+    for (final f in futures)
+      await f;
 
 
     // fetch all
-    futures.add(_findRoot().fetch());
-
-
-    // awaits
-    for (final f in futures)
-      await f;
+    await _findRoot().fetch();
   }
 
   // called by system

@@ -1,3 +1,6 @@
+## 0.0.27
+- Fix a bug of await parts of update
+
 ## 0.0.26
 - Add user_data to Model methods for param
 

@@ -1,4 +1,4 @@
-## 0.0.29
+## 0.0.30
 - Add ViewModel.toString()
 
 ## 0.0.28

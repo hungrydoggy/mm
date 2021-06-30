@@ -88,7 +88,7 @@ abstract class ViewModel {
     // init nested vms
     for (final nvm in _nesteds) {
       // ignore: unawaited_futures
-      nvm.init(
+      await nvm.init(
         on_vm_property_change: on_vm_property_change,
         need_fetch: false,
       );

@@ -40,7 +40,7 @@ abstract class ViewModel {
     _name_nested_map.clear();
     for (final n in _nesteds) {
       if (n._vm_name != null)
-      _name_nested_map[n._vm_name!] = n;
+        _name_nested_map[n._vm_name!] = n;
       n._parent_vm = this;
     }
   }
@@ -243,5 +243,16 @@ abstract class ViewModel {
     while (vm._parent_vm != null)
       vm = _parent_vm!;
     return vm;
+  }
+
+  @override
+  String toString() {
+    var str = 'ViewModel {\n  vm_name: $_vm_name\n';
+    for (final vmp in _vm_properties)
+      str += '  ${vmp.name}: ${(vmp.property == null)? '(not bound)': vmp.value}\n';
+    for (final n in _nesteds)
+      str += '  ${n._vm_name}: ${n.toString().split('\n').map((e)=>'  '+e).join('\n')}\n';
+    str += '}';
+    return str;
   }
 }

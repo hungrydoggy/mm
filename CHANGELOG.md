@@ -1,3 +1,6 @@
+## 0.0.29
+- Add ViewModel.toString()
+
 ## 0.0.28
 - Fix a bug of await parts of update
 

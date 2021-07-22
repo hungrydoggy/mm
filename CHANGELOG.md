@@ -1,3 +1,6 @@
+## 0.0.31
+- Add ModelHandler.isValidKey()
+
 ## 0.0.30
 - Add ViewModel.toString()
 

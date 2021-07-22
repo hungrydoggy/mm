@@ -1,6 +1,6 @@
 name: mm
 description: Model Manager
-version: 0.0.30
+version: 0.0.31
 homepage: https://github.com/hungrydoggy/mm
 
 environment:

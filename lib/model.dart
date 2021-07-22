@@ -144,7 +144,7 @@ abstract class Model {
   ) {
     for (final k in json.keys) {
       if (_name_property_map.containsKey(k) == false) {
-        if (k != 'id' && k[0] != '*')
+        if (k != 'id' && handler.isValidKey(k) == false)
           print('no property "$k" in $model_name');
         continue;
       }
@@ -254,6 +254,10 @@ abstract class ModelHandler {
   String get model_name;
 
   Model newInstance (dynamic id);
+
+  bool isValidKey (String key) {
+    return false;
+  }
 
   Future<T?> onCreate<T extends Model> (
       Map<Property, dynamic> property_value_map,

@@ -1,3 +1,6 @@
+## 0.0.32
+- Add double&int cases to PropertyValueConverter
+
 ## 0.0.31
 - Add ModelHandler.isValidKey()
 

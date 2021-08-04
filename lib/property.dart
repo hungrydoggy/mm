@@ -2,6 +2,8 @@ library mm;
 
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 import 'model.dart';
 
 
@@ -70,8 +72,15 @@ class PropertyValueConverter {
     if (json_value == null)
       return null;
 
-    if (T == DateTime)
-      return DateTime.parse(json_value as String) as T;
+    switch (T) {
+      case DateTime:
+        return DateTime.parse(json_value as String) as T;
+      case double:
+        return (json_value as num).toDouble() as T;
+      case int:
+        return (json_value as num).toInt() as T;
+    }
+    
     if (json_value is Map) {
       if (json_value.containsKey('type') && json_value['type'] == 'Point' && json_value.containsKey('coordinates'))
         return Point<num>(json_value['coordinates'][0] as num, json_value['coordinates'][1] as num) as T;

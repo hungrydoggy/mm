@@ -1,3 +1,6 @@
+## 0.0.33
+- Remove err log for "(non_model_data)"
+
 ## 0.0.32
 - Add double&int cases to PropertyValueConverter
 

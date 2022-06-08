@@ -144,7 +144,7 @@ abstract class Model {
   ) {
     for (final k in json.keys) {
       if (_name_property_map.containsKey(k) == false) {
-        if (k != 'id' && handler.isValidKey(k) == false)
+        if (k != 'id' && k != '(non_model_data)' && handler.isValidKey(k) == false)
           print('no property "$k" in $model_name');
         continue;
       }

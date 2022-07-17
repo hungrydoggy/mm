@@ -27,7 +27,7 @@ class Property<T> {
   dynamic get json_value => value_converter.fromValue<T>(_value);
   int get last_updated_ts => _last_updated_ts;
   int get lifetime_ms => _lifetime_ms;
-  bool get is_dirty => (DateTime.now().millisecondsSinceEpoch - _last_updated_ts) > _lifetime_ms;
+  bool get is_dirty => (DateTime.now().millisecondsSinceEpoch - _last_updated_ts) > _lifetime_ms*1000;
   
   Property ({required String name, T? default_value, int lifetime_ms = 1000}):
       _name        = name,

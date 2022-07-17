@@ -1,3 +1,6 @@
+## 0.0.34
+- Fix a bug about checking dirty of property
+
 ## 0.0.33
 - Remove err log for "(non_model_data)"
 

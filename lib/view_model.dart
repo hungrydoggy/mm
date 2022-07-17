@@ -114,7 +114,8 @@ abstract class ViewModel {
       final modelid_vmproperties_map = handler_modelid_vmproperties_map[ms]!;
       for (final mid in modelid_vmproperties_map.keys) {
         final vm_properties = modelid_vmproperties_map[mid]!;
-        final m = await Model.fetchModelWithPropertyNames(ms, mid, vm_properties.map<String>((e)=>e.property_name).toList());
+        // final m = await Model.fetchModelWithPropertyNames(ms, mid, vm_properties.map<String>((e)=>e.property_name).toList());
+        final m = Model.getOrNewModel(ms, mid);
         for (final vmp in vm_properties)
           vmp.sys_setProperty(m!.getProperty(vmp.property_name)!);
       }

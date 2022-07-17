@@ -1,3 +1,6 @@
+## 0.0.35
+- Update ViewModel not to use Model.fetchModelWithPropertyNames
+
 ## 0.0.34
 - Fix a bug about checking dirty of property
 
